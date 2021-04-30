@@ -4,14 +4,15 @@ import { Client } from '../clients';
 import { Callback, RequestConfig } from '../types';
 
 export class Members {
-  constructor(private client: Client) { }
+  constructor(private client: Client) {
+  }
 
   /**
    * Get a member */
   async getMember<T = unknown>(parameters: Parameters.GetMember, callback: Callback<T>): Promise<void>;
   /**
    * Get a member */
-  async getMember<T = unknown>(parameters: Parameters.GetMember, callback?: undefined): Promise<T>;
+  async getMember<T = unknown>(parameters: Parameters.GetMember, callback?: never): Promise<T>;
   async getMember<T = unknown>(parameters: Parameters.GetMember, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}`,
@@ -30,8 +31,8 @@ export class Members {
         fields: parameters.fields,
         notifications: parameters.notifications,
         organizations: parameters.organizations,
-        organization_fields: parameters.organizationFields,
-        organization_paid_account: parameters.organizationPaidAccount,
+        organization_fields: parameters.organizationFields || parameters.organization?.fields,
+        organization_paid_account: parameters.organizationPaidAccount || parameters.organization?.paidAccount,
         organizationsInvited: parameters.organizationsInvited,
         organizationsInvited_fields: parameters.organizationsInvitedFields,
         paid_account: parameters.paidAccount,
@@ -48,7 +49,7 @@ export class Members {
   async updateMember<T = unknown>(parameters: Parameters.UpdateMember, callback: Callback<T>): Promise<void>;
   /**
    * Update a Member */
-  async updateMember<T = unknown>(parameters: Parameters.UpdateMember, callback?: undefined): Promise<T>;
+  async updateMember<T = unknown>(parameters: Parameters.UpdateMember, callback?: never): Promise<T>;
   async updateMember<T = unknown>(parameters: Parameters.UpdateMember, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}`,
@@ -59,9 +60,9 @@ export class Members {
         username: parameters.username,
         bio: parameters.bio,
         avatarSource: parameters.avatarSource,
-        'prefs/colorBlind': parameters.colorBlind,
-        'prefs/locale': parameters.locale,
-        'prefs/minutesBetweenSummaries': parameters.minutesBetweenSummaries,
+        'prefs/colorBlind': parameters.colorBlind || parameters.preferences?.colorBlind,
+        'prefs/locale': parameters.locale || parameters.preferences?.locale,
+        'prefs/minutesBetweenSummaries': parameters.minutesBetweenSummaries || parameters.preferences?.minutesBetweenSummaries,
       },
     };
 
@@ -73,7 +74,7 @@ export class Members {
   async getMemberField<T = unknown>(parameters: Parameters.GetMemberField, callback: Callback<T>): Promise<void>;
   /**
    * Get a particular property of a member */
-  async getMemberField<T = unknown>(parameters: Parameters.GetMemberField, callback?: undefined): Promise<T>;
+  async getMemberField<T = unknown>(parameters: Parameters.GetMemberField, callback?: never): Promise<T>;
   async getMemberField<T = unknown>(parameters: Parameters.GetMemberField, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/${parameters.field}`,
@@ -85,11 +86,11 @@ export class Members {
 
   /**
    * List the actions for a member */
-  async getMemberActions<T = unknown>(parameters: Parameters.GetMemberActions, callback: Callback<T>): Promise<void>;
+  async getMemberActions<T = Array<Models.Member>>(parameters: Parameters.GetMemberActions, callback: Callback<T>): Promise<void>;
   /**
    * List the actions for a member */
-  async getMemberActions<T = unknown>(parameters: Parameters.GetMemberActions, callback?: undefined): Promise<T>;
-  async getMemberActions<T = unknown>(parameters: Parameters.GetMemberActions, callback?: Callback<T>): Promise<void | T> {
+  async getMemberActions<T = Array<Models.Member>>(parameters: Parameters.GetMemberActions, callback?: never): Promise<T>;
+  async getMemberActions<T = Array<Models.Member>>(parameters: Parameters.GetMemberActions, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/actions`,
       method: 'GET',
@@ -103,11 +104,11 @@ export class Members {
 
   /**
    * Get a member's custom board backgrounds */
-  async getMemberBoardBackgrounds<T = unknown>(parameters: Parameters.GetMemberBoardBackgrounds, callback: Callback<T>): Promise<void>;
+  async getMemberBoardBackgrounds<T = Array<Models.BoardBackground>>(parameters: Parameters.GetMemberBoardBackgrounds, callback: Callback<T>): Promise<void>;
   /**
    * Get a member's custom board backgrounds */
-  async getMemberBoardBackgrounds<T = unknown>(parameters: Parameters.GetMemberBoardBackgrounds, callback?: undefined): Promise<T>;
-  async getMemberBoardBackgrounds<T = unknown>(parameters: Parameters.GetMemberBoardBackgrounds, callback?: Callback<T>): Promise<void | T> {
+  async getMemberBoardBackgrounds<T = Array<Models.BoardBackground>>(parameters: Parameters.GetMemberBoardBackgrounds, callback?: never): Promise<T>;
+  async getMemberBoardBackgrounds<T = Array<Models.BoardBackground>>(parameters: Parameters.GetMemberBoardBackgrounds, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardBackgrounds`,
       method: 'GET',
@@ -121,11 +122,11 @@ export class Members {
 
   /**
    * Upload a new boardBackground */
-  async uploadMemberBoardBackground<T = unknown>(parameters: Parameters.UploadMemberBoardBackground, callback: Callback<T>): Promise<void>;
+  async uploadMemberBoardBackground<T = Array<Models.BoardBackground>>(parameters: Parameters.UploadMemberBoardBackground, callback: Callback<T>): Promise<void>;
   /**
    * Upload a new boardBackground */
-  async uploadMemberBoardBackground<T = unknown>(parameters: Parameters.UploadMemberBoardBackground, callback?: undefined): Promise<T>;
-  async uploadMemberBoardBackground<T = unknown>(parameters: Parameters.UploadMemberBoardBackground, callback?: Callback<T>): Promise<void | T> {
+  async uploadMemberBoardBackground<T = Array<Models.BoardBackground>>(parameters: Parameters.UploadMemberBoardBackground, callback?: never): Promise<T>;
+  async uploadMemberBoardBackground<T = Array<Models.BoardBackground>>(parameters: Parameters.UploadMemberBoardBackground, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardBackgrounds`,
       method: 'POST',
@@ -142,7 +143,7 @@ export class Members {
   async getMemberBoardBackground<T = Models.BoardBackground>(parameters: Parameters.GetMemberBoardBackground, callback: Callback<T>): Promise<void>;
   /**
    * Get a member's board background */
-  async getMemberBoardBackground<T = Models.BoardBackground>(parameters: Parameters.GetMemberBoardBackground, callback?: undefined): Promise<T>;
+  async getMemberBoardBackground<T = Models.BoardBackground>(parameters: Parameters.GetMemberBoardBackground, callback?: never): Promise<T>;
   async getMemberBoardBackground<T = Models.BoardBackground>(parameters: Parameters.GetMemberBoardBackground, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardBackgrounds/${parameters.idBackground}`,
@@ -160,7 +161,7 @@ export class Members {
   async updateBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UpdateBoardBackground, callback: Callback<T>): Promise<void>;
   /**
    * Update a board background */
-  async updateBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UpdateBoardBackground, callback?: undefined): Promise<T>;
+  async updateBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UpdateBoardBackground, callback?: never): Promise<T>;
   async updateBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UpdateBoardBackground, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardBackgrounds/${parameters.idBackground}`,
@@ -179,7 +180,7 @@ export class Members {
   async deleteMemberBoardBackground<T = unknown>(parameters: Parameters.DeleteMemberBoardBackgroud, callback: Callback<T>): Promise<void>;
   /**
    * Delete a board background */
-  async deleteMemberBoardBackground<T = unknown>(parameters: Parameters.DeleteMemberBoardBackgroud, callback?: undefined): Promise<T>;
+  async deleteMemberBoardBackground<T = unknown>(parameters: Parameters.DeleteMemberBoardBackgroud, callback?: never): Promise<T>;
   async deleteMemberBoardBackground<T = unknown>(parameters: Parameters.DeleteMemberBoardBackgroud, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardBackgrounds/${parameters.idBackground}`,
@@ -194,7 +195,7 @@ export class Members {
   async getMemberBoardStars<T = unknown>(parameters: Parameters.GetMemberBoardStars, callback: Callback<T>): Promise<void>;
   /**
    * List a member's board stars */
-  async getMemberBoardStars<T = unknown>(parameters: Parameters.GetMemberBoardStars, callback?: undefined): Promise<T>;
+  async getMemberBoardStars<T = unknown>(parameters: Parameters.GetMemberBoardStars, callback?: never): Promise<T>;
   async getMemberBoardStars<T = unknown>(parameters: Parameters.GetMemberBoardStars, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardStars`,
@@ -206,11 +207,11 @@ export class Members {
 
   /**
    * Star a new board on behalf of a Member */
-  async starMemberBoard<T = unknown>(parameters: Parameters.StarMemberBoard, callback: Callback<T>): Promise<void>;
+  async starMemberBoard<T = Array<Models.BoardStars>>(parameters: Parameters.StarMemberBoard, callback: Callback<T>): Promise<void>;
   /**
    * Star a new board on behalf of a Member */
-  async starMemberBoard<T = unknown>(parameters: Parameters.StarMemberBoard, callback?: undefined): Promise<T>;
-  async starMemberBoard<T = unknown>(parameters: Parameters.StarMemberBoard, callback?: Callback<T>): Promise<void | T> {
+  async starMemberBoard<T = Array<Models.BoardStars>>(parameters: Parameters.StarMemberBoard, callback?: never): Promise<T>;
+  async starMemberBoard<T = Array<Models.BoardStars>>(parameters: Parameters.StarMemberBoard, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardStars`,
       method: 'POST',
@@ -228,7 +229,7 @@ export class Members {
   async getMemberBoardStar<T = Models.BoardStars>(parameters: Parameters.GetMemberBoardStar, callback: Callback<T>): Promise<void>;
   /**
    * Get a specific boardStar */
-  async getMemberBoardStar<T = Models.BoardStars>(parameters: Parameters.GetMemberBoardStar, callback?: undefined): Promise<T>;
+  async getMemberBoardStar<T = Models.BoardStars>(parameters: Parameters.GetMemberBoardStar, callback?: never): Promise<T>;
   async getMemberBoardStar<T = Models.BoardStars>(parameters: Parameters.GetMemberBoardStar, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardStars/${parameters.idStar}`,
@@ -243,7 +244,7 @@ export class Members {
   async updateMemberBoardStar<T = unknown>(parameters: Parameters.UpdateMemberBoardStar, callback: Callback<T>): Promise<void>;
   /**
    * Update the position of a starred board */
-  async updateMemberBoardStar<T = unknown>(parameters: Parameters.UpdateMemberBoardStar, callback?: undefined): Promise<T>;
+  async updateMemberBoardStar<T = unknown>(parameters: Parameters.UpdateMemberBoardStar, callback?: never): Promise<T>;
   async updateMemberBoardStar<T = unknown>(parameters: Parameters.UpdateMemberBoardStar, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardStars/${parameters.idStar}`,
@@ -261,7 +262,7 @@ export class Members {
   async unstarMemberBoard<T = unknown>(parameters: Parameters.UnstarMemberBoard, callback: Callback<T>): Promise<void>;
   /**
    * Unstar a board */
-  async unstarMemberBoard<T = unknown>(parameters: Parameters.UnstarMemberBoard, callback?: undefined): Promise<T>;
+  async unstarMemberBoard<T = unknown>(parameters: Parameters.UnstarMemberBoard, callback?: never): Promise<T>;
   async unstarMemberBoard<T = unknown>(parameters: Parameters.UnstarMemberBoard, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardStars/${parameters.idStar}`,
@@ -276,7 +277,7 @@ export class Members {
   async getMemberBoards<T = Models.Board[]>(parameters: Parameters.GetMemberBoards, callback: Callback<T>): Promise<void>;
   /**
    * Lists the boards that the user is a member of. */
-  async getMemberBoards<T = Models.Board[]>(parameters: Parameters.GetMemberBoards, callback?: undefined): Promise<T>;
+  async getMemberBoards<T = Models.Board[]>(parameters: Parameters.GetMemberBoards, callback?: never): Promise<T>;
   async getMemberBoards<T = Models.Board[]>(parameters: Parameters.GetMemberBoards, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boards`,
@@ -295,11 +296,11 @@ export class Members {
 
   /**
    * Get the boards the member has been invited to */
-  async getMemberBoardsInvited<T = unknown>(parameters: Parameters.GetMemberBoardsInvited, callback: Callback<T>): Promise<void>;
+  async getMemberBoardsInvited<T = Array<Models.Board>>(parameters: Parameters.GetMemberBoardsInvited, callback: Callback<T>): Promise<void>;
   /**
    * Get the boards the member has been invited to */
-  async getMemberBoardsInvited<T = unknown>(parameters: Parameters.GetMemberBoardsInvited, callback?: undefined): Promise<T>;
-  async getMemberBoardsInvited<T = unknown>(parameters: Parameters.GetMemberBoardsInvited, callback?: Callback<T>): Promise<void | T> {
+  async getMemberBoardsInvited<T = Array<Models.Board>>(parameters: Parameters.GetMemberBoardsInvited, callback?: never): Promise<T>;
+  async getMemberBoardsInvited<T = Array<Models.Board>>(parameters: Parameters.GetMemberBoardsInvited, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/boardsInvited`,
       method: 'GET',
@@ -313,11 +314,11 @@ export class Members {
 
   /**
    * Gets the cards a member is on */
-  async getMemberCards<T = unknown>(parameters: Parameters.GetMemberCards, callback: Callback<T>): Promise<void>;
+  async getMemberCards<T = Array<Models.Card>>(parameters: Parameters.GetMemberCards, callback: Callback<T>): Promise<void>;
   /**
    * Gets the cards a member is on */
-  async getMemberCards<T = unknown>(parameters: Parameters.GetMemberCards, callback?: undefined): Promise<T>;
-  async getMemberCards<T = unknown>(parameters: Parameters.GetMemberCards, callback?: Callback<T>): Promise<void | T> {
+  async getMemberCards<T = Array<Models.Card>>(parameters: Parameters.GetMemberCards, callback?: never): Promise<T>;
+  async getMemberCards<T = Array<Models.Card>>(parameters: Parameters.GetMemberCards, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/cards`,
       method: 'GET',
@@ -331,11 +332,11 @@ export class Members {
 
   /**
    * Get a member's custom board backgrounds */
-  async getMemberCustomBoardBackgrounds<T = unknown>(parameters: Parameters.GetMemberCustomBoardBackgrounds, callback: Callback<T>): Promise<void>;
+  async getMemberCustomBoardBackgrounds<T = Array<Models.BoardBackground>>(parameters: Parameters.GetMemberCustomBoardBackgrounds, callback: Callback<T>): Promise<void>;
   /**
    * Get a member's custom board backgrounds */
-  async getMemberCustomBoardBackgrounds<T = unknown>(parameters: Parameters.GetMemberCustomBoardBackgrounds, callback?: undefined): Promise<T>;
-  async getMemberCustomBoardBackgrounds<T = unknown>(parameters: Parameters.GetMemberCustomBoardBackgrounds, callback?: Callback<T>): Promise<void | T> {
+  async getMemberCustomBoardBackgrounds<T = Array<Models.BoardBackground>>(parameters: Parameters.GetMemberCustomBoardBackgrounds, callback?: never): Promise<T>;
+  async getMemberCustomBoardBackgrounds<T = Array<Models.BoardBackground>>(parameters: Parameters.GetMemberCustomBoardBackgrounds, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customBoardBackgrounds`,
       method: 'GET',
@@ -349,7 +350,7 @@ export class Members {
   async uploadMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UploadMemberCustomBoardBackground, callback: Callback<T>): Promise<void>;
   /**
    * Upload a new custom board background */
-  async uploadMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UploadMemberCustomBoardBackground, callback?: undefined): Promise<T>;
+  async uploadMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UploadMemberCustomBoardBackground, callback?: never): Promise<T>;
   async uploadMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UploadMemberCustomBoardBackground, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customBoardBackgrounds`,
@@ -367,7 +368,7 @@ export class Members {
   async getMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.GetMemberCustomBoardBackground, callback: Callback<T>): Promise<void>;
   /**
    * Get a specific custom board background */
-  async getMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.GetMemberCustomBoardBackground, callback?: undefined): Promise<T>;
+  async getMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.GetMemberCustomBoardBackground, callback?: never): Promise<T>;
   async getMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.GetMemberCustomBoardBackground, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customBoardBackgrounds/${parameters.idBackground}`,
@@ -382,7 +383,7 @@ export class Members {
   async updateMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UpdateMemberCustomBoardBackground, callback: Callback<T>): Promise<void>;
   /**
    * Update a specific custom board background */
-  async updateMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UpdateMemberCustomBoardBackground, callback?: undefined): Promise<T>;
+  async updateMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UpdateMemberCustomBoardBackground, callback?: never): Promise<T>;
   async updateMemberCustomBoardBackground<T = Models.BoardBackground>(parameters: Parameters.UpdateMemberCustomBoardBackground, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customBoardBackgrounds/${parameters.idBackground}`,
@@ -401,7 +402,7 @@ export class Members {
   async deleteMemberCustomBoardBackground<T = unknown>(parameters: Parameters.DeleteMemberCustomBoardBackground, callback: Callback<T>): Promise<void>;
   /**
    * Delete a specific custom board background */
-  async deleteMemberCustomBoardBackground<T = unknown>(parameters: Parameters.DeleteMemberCustomBoardBackground, callback?: undefined): Promise<T>;
+  async deleteMemberCustomBoardBackground<T = unknown>(parameters: Parameters.DeleteMemberCustomBoardBackground, callback?: never): Promise<T>;
   async deleteMemberCustomBoardBackground<T = unknown>(parameters: Parameters.DeleteMemberCustomBoardBackground, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customBoardBackgrounds/${parameters.idBackground}`,
@@ -413,11 +414,11 @@ export class Members {
 
   /**
    * Get a Member's uploaded custom Emojis */
-  async getMemberCustomEmojis<T = unknown>(parameters: Parameters.GetMemberCustomEmojis, callback: Callback<T>): Promise<void>;
+  async getMemberCustomEmojis<T = Array<Models.CustomEmoji>>(parameters: Parameters.GetMemberCustomEmojis, callback: Callback<T>): Promise<void>;
   /**
    * Get a Member's uploaded custom Emojis */
-  async getMemberCustomEmojis<T = unknown>(parameters: Parameters.GetMemberCustomEmojis, callback?: undefined): Promise<T>;
-  async getMemberCustomEmojis<T = unknown>(parameters: Parameters.GetMemberCustomEmojis, callback?: Callback<T>): Promise<void | T> {
+  async getMemberCustomEmojis<T = Array<Models.CustomEmoji>>(parameters: Parameters.GetMemberCustomEmojis, callback?: never): Promise<T>;
+  async getMemberCustomEmojis<T = Array<Models.CustomEmoji>>(parameters: Parameters.GetMemberCustomEmojis, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customEmoji`,
       method: 'GET',
@@ -431,7 +432,7 @@ export class Members {
   async createMemberCustomEmoji<T = Models.CustomEmoji>(parameters: Parameters.CreateMemberCustomEmoji, callback: Callback<T>): Promise<void>;
   /**
    * Create a new custom Emoji */
-  async createMemberCustomEmoji<T = Models.CustomEmoji>(parameters: Parameters.CreateMemberCustomEmoji, callback?: undefined): Promise<T>;
+  async createMemberCustomEmoji<T = Models.CustomEmoji>(parameters: Parameters.CreateMemberCustomEmoji, callback?: never): Promise<T>;
   async createMemberCustomEmoji<T = Models.CustomEmoji>(parameters: Parameters.CreateMemberCustomEmoji, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customEmoji`,
@@ -450,7 +451,7 @@ export class Members {
   async getMemberCustomEmoji<T = Models.CustomEmoji>(parameters: Parameters.GetMemberCustomEmoji, callback: Callback<T>): Promise<void>;
   /**
    * Get a Member's custom Emoji */
-  async getMemberCustomEmoji<T = Models.CustomEmoji>(parameters: Parameters.GetMemberCustomEmoji, callback?: undefined): Promise<T>;
+  async getMemberCustomEmoji<T = Models.CustomEmoji>(parameters: Parameters.GetMemberCustomEmoji, callback?: never): Promise<T>;
   async getMemberCustomEmoji<T = Models.CustomEmoji>(parameters: Parameters.GetMemberCustomEmoji, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customEmoji/${parameters.idEmoji}`,
@@ -465,11 +466,11 @@ export class Members {
 
   /**
    * Get a Member's uploaded stickers */
-  async getMemberCustomStickers<T = unknown>(parameters: Parameters.GetMemberCustomStickers, callback: Callback<T>): Promise<void>;
+  async getMemberCustomStickers<T = Array<Models.CustomSticker>>(parameters: Parameters.GetMemberCustomStickers, callback: Callback<T>): Promise<void>;
   /**
    * Get a Member's uploaded stickers */
-  async getMemberCustomStickers<T = unknown>(parameters: Parameters.GetMemberCustomStickers, callback?: undefined): Promise<T>;
-  async getMemberCustomStickers<T = unknown>(parameters: Parameters.GetMemberCustomStickers, callback?: Callback<T>): Promise<void | T> {
+  async getMemberCustomStickers<T = Array<Models.CustomSticker>>(parameters: Parameters.GetMemberCustomStickers, callback?: never): Promise<T>;
+  async getMemberCustomStickers<T = Array<Models.CustomSticker>>(parameters: Parameters.GetMemberCustomStickers, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customStickers`,
       method: 'GET',
@@ -483,7 +484,7 @@ export class Members {
   async uploadMemberCustomSticker<T = Models.CustomSticker>(parameters: Parameters.UploadMemberCustomSticker, callback: Callback<T>): Promise<void>;
   /**
    * Upload a new custom sticker */
-  async uploadMemberCustomSticker<T = Models.CustomSticker>(parameters: Parameters.UploadMemberCustomSticker, callback?: undefined): Promise<T>;
+  async uploadMemberCustomSticker<T = Models.CustomSticker>(parameters: Parameters.UploadMemberCustomSticker, callback?: never): Promise<T>;
   async uploadMemberCustomSticker<T = Models.CustomSticker>(parameters: Parameters.UploadMemberCustomSticker, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customStickers`,
@@ -501,7 +502,7 @@ export class Members {
   async getMemberCustomSticker<T = Models.CustomSticker>(parameters: Parameters.GetMemberCustomSticker, callback: Callback<T>): Promise<void>;
   /**
    * Get a Member's custom Sticker */
-  async getMemberCustomSticker<T = Models.CustomSticker>(parameters: Parameters.GetMemberCustomSticker, callback?: undefined): Promise<T>;
+  async getMemberCustomSticker<T = Models.CustomSticker>(parameters: Parameters.GetMemberCustomSticker, callback?: never): Promise<T>;
   async getMemberCustomSticker<T = Models.CustomSticker>(parameters: Parameters.GetMemberCustomSticker, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customStickers/${parameters.idSticker}`,
@@ -519,7 +520,7 @@ export class Members {
   async deleteMemberCustomSticker<T = unknown>(parameters: Parameters.DeleteMemberCustomSticker, callback: Callback<T>): Promise<void>;
   /**
    * Delete a Member's custom Sticker */
-  async deleteMemberCustomSticker<T = unknown>(parameters: Parameters.DeleteMemberCustomSticker, callback?: undefined): Promise<T>;
+  async deleteMemberCustomSticker<T = unknown>(parameters: Parameters.DeleteMemberCustomSticker, callback?: never): Promise<T>;
   async deleteMemberCustomSticker<T = unknown>(parameters: Parameters.DeleteMemberCustomSticker, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/customStickers/${parameters.idSticker}`,
@@ -531,11 +532,11 @@ export class Members {
 
   /**
    * Get a member's notifications */
-  async getMemberNotifications<T = unknown>(parameters: Parameters.GetMemberNotifications, callback: Callback<T>): Promise<void>;
+  async getMemberNotifications<T = Array<Models.Notification>>(parameters: Parameters.GetMemberNotifications, callback: Callback<T>): Promise<void>;
   /**
    * Get a member's notifications */
-  async getMemberNotifications<T = unknown>(parameters: Parameters.GetMemberNotifications, callback?: undefined): Promise<T>;
-  async getMemberNotifications<T = unknown>(parameters: Parameters.GetMemberNotifications, callback?: Callback<T>): Promise<void | T> {
+  async getMemberNotifications<T = Array<Models.Notification>>(parameters: Parameters.GetMemberNotifications, callback?: never): Promise<T>;
+  async getMemberNotifications<T = Array<Models.Notification>>(parameters: Parameters.GetMemberNotifications, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/notifications`,
       method: 'GET',
@@ -562,7 +563,7 @@ export class Members {
   async getMemberOrganizations<T = Models.Organization[]>(parameters: Parameters.GetMemberOrganizations, callback: Callback<T>): Promise<void>;
   /**
    * Get a member's teams */
-  async getMemberOrganizations<T = Models.Organization[]>(parameters: Parameters.GetMemberOrganizations, callback?: undefined): Promise<T>;
+  async getMemberOrganizations<T = Models.Organization[]>(parameters: Parameters.GetMemberOrganizations, callback?: never): Promise<T>;
   async getMemberOrganizations<T = Models.Organization[]>(parameters: Parameters.GetMemberOrganizations, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/organizations`,
@@ -579,11 +580,11 @@ export class Members {
 
   /**
    * Get a member's teams they have been invited to */
-  async getMemberOrganizationsInvited<T = unknown>(parameters: Parameters.GetMemberOrganizationsInvited, callback: Callback<T>): Promise<void>;
+  async getMemberOrganizationsInvited<T = Array<Models.Organization>>(parameters: Parameters.GetMemberOrganizationsInvited, callback: Callback<T>): Promise<void>;
   /**
    * Get a member's teams they have been invited to */
-  async getMemberOrganizationsInvited<T = unknown>(parameters: Parameters.GetMemberOrganizationsInvited, callback?: undefined): Promise<T>;
-  async getMemberOrganizationsInvited<T = unknown>(parameters: Parameters.GetMemberOrganizationsInvited, callback?: Callback<T>): Promise<void | T> {
+  async getMemberOrganizationsInvited<T = Array<Models.Organization>>(parameters: Parameters.GetMemberOrganizationsInvited, callback?: never): Promise<T>;
+  async getMemberOrganizationsInvited<T = Array<Models.Organization>>(parameters: Parameters.GetMemberOrganizationsInvited, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/organizationsInvited`,
       method: 'GET',
@@ -597,11 +598,11 @@ export class Members {
 
   /**
    * List the saved searches of a Member */
-  async getMemberSavedSearches<T = unknown>(parameters: Parameters.GetMemberSavedSearches, callback: Callback<T>): Promise<void>;
+  async getMemberSavedSearches<T = Array<Models.SavedSearch>>(parameters: Parameters.GetMemberSavedSearches, callback: Callback<T>): Promise<void>;
   /**
    * List the saved searches of a Member */
-  async getMemberSavedSearches<T = unknown>(parameters: Parameters.GetMemberSavedSearches, callback?: undefined): Promise<T>;
-  async getMemberSavedSearches<T = unknown>(parameters: Parameters.GetMemberSavedSearches, callback?: Callback<T>): Promise<void | T> {
+  async getMemberSavedSearches<T = Array<Models.SavedSearch>>(parameters: Parameters.GetMemberSavedSearches, callback?: never): Promise<T>;
+  async getMemberSavedSearches<T = Array<Models.SavedSearch>>(parameters: Parameters.GetMemberSavedSearches, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/savedSearches`,
       method: 'GET',
@@ -615,7 +616,7 @@ export class Members {
   async createMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.CreateMemberSavedSearch, callback: Callback<T>): Promise<void>;
   /**
    * Create a saved search */
-  async createMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.CreateMemberSavedSearch, callback?: undefined): Promise<T>;
+  async createMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.CreateMemberSavedSearch, callback?: never): Promise<T>;
   async createMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.CreateMemberSavedSearch, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/savedSearches`,
@@ -635,7 +636,7 @@ export class Members {
   async getMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.GetMemberSavedSearch, callback: Callback<T>): Promise<void>;
   /**
    * Get a saved search */
-  async getMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.GetMemberSavedSearch, callback?: undefined): Promise<T>;
+  async getMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.GetMemberSavedSearch, callback?: never): Promise<T>;
   async getMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.GetMemberSavedSearch, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/savedSearches/${parameters.idSearch}`,
@@ -650,7 +651,7 @@ export class Members {
   async updateMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.UpdateMemberSavedSerch, callback: Callback<T>): Promise<void>;
   /**
    * Update a saved search */
-  async updateMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.UpdateMemberSavedSerch, callback?: undefined): Promise<T>;
+  async updateMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.UpdateMemberSavedSerch, callback?: never): Promise<T>;
   async updateMemberSavedSearch<T = Models.SavedSearch>(parameters: Parameters.UpdateMemberSavedSerch, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/savedSearches/${parameters.idSearch}`,
@@ -670,7 +671,7 @@ export class Members {
   async deleteMemberSavedSearch<T = unknown>(parameters: Parameters.DeleteMemberSavedSearch, callback: Callback<T>): Promise<void>;
   /**
    * Delete a saved search */
-  async deleteMemberSavedSearch<T = unknown>(parameters: Parameters.DeleteMemberSavedSearch, callback?: undefined): Promise<T>;
+  async deleteMemberSavedSearch<T = unknown>(parameters: Parameters.DeleteMemberSavedSearch, callback?: never): Promise<T>;
   async deleteMemberSavedSearch<T = unknown>(parameters: Parameters.DeleteMemberSavedSearch, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/savedSearches/${parameters.idSearch}`,
@@ -682,11 +683,11 @@ export class Members {
 
   /**
    * List a members app tokens */
-  async getMemberTokens<T = unknown>(parameters: Parameters.GetMemberTokens, callback: Callback<T>): Promise<void>;
+  async getMemberTokens<T = Array<Models.Token>>(parameters: Parameters.GetMemberTokens, callback: Callback<T>): Promise<void>;
   /**
    * List a members app tokens */
-  async getMemberTokens<T = unknown>(parameters: Parameters.GetMemberTokens, callback?: undefined): Promise<T>;
-  async getMemberTokens<T = unknown>(parameters: Parameters.GetMemberTokens, callback?: Callback<T>): Promise<void | T> {
+  async getMemberTokens<T = Array<Models.Token>>(parameters: Parameters.GetMemberTokens, callback?: never): Promise<T>;
+  async getMemberTokens<T = Array<Models.Token>>(parameters: Parameters.GetMemberTokens, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/tokens`,
       method: 'GET',
@@ -703,7 +704,7 @@ export class Members {
   async createMemberAvatar<T = unknown>(parameters: Parameters.CreateMemberAvatar, callback: Callback<T>): Promise<void>;
   /**
    * Create a new avatar for a member */
-  async createMemberAvatar<T = unknown>(parameters: Parameters.CreateMemberAvatar, callback?: undefined): Promise<T>;
+  async createMemberAvatar<T = unknown>(parameters: Parameters.CreateMemberAvatar, callback?: never): Promise<T>;
   async createMemberAvatar<T = unknown>(parameters: Parameters.CreateMemberAvatar, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/avatar`,
@@ -721,7 +722,7 @@ export class Members {
   async dismissMemberMessage<T = unknown>(parameters: Parameters.DismissMemberMessage, callback: Callback<T>): Promise<void>;
   /**
    * Dismiss a message */
-  async dismissMemberMessage<T = unknown>(parameters: Parameters.DismissMemberMessage, callback?: undefined): Promise<T>;
+  async dismissMemberMessage<T = unknown>(parameters: Parameters.DismissMemberMessage, callback?: never): Promise<T>;
   async dismissMemberMessage<T = unknown>(parameters: Parameters.DismissMemberMessage, callback?: Callback<T>): Promise<void | T> {
     const config: RequestConfig = {
       url: `/members/${parameters.id}/oneTimeMessagesDismissed`,
